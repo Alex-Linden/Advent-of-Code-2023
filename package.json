@@ -2,7 +2,7 @@
   "name": "aoc_2023",
   "version": "1.0.0",
   "description": "my solutions to advent of Code 2023 https://adventofcode.com/",
-  "main": "day7.js",
+  "main": "day8.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
