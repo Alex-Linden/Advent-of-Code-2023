@@ -26,6 +26,7 @@ class PipeGame {
     this.start = this.findStart();
     this.loop = [];
     this.PolyArea = 0;
+    this.corners = [];
   }
 
   findStart() {
@@ -91,6 +92,9 @@ class PipeGame {
     this.loop.push(prev1);
 
     while (this.cordToString(cur1) !== this.cordToString(this.start)) {
+      if ("LJF7".indexOf(this.map[cur1[0]][cur1[1]] !== -1)) {
+        this.corners.push(cur1);
+      }
       if (seen.has(this.cordToString(cur1))) {
         // console.log("cords seen")
         break;
@@ -113,21 +117,29 @@ class PipeGame {
   }
 
   shoelace() {
-    let len = this.loop.length;
+    let len = this.corners.length;
     let sum1 = 0;
     let sum2 = 0;
     let area = 0;
+    let points = this.corners;
+    points.push(this.start);
     for (let i = 0; i < len - 1; i++) {
-      sum1 += this.loop[i][0] * this.loop[i + 1][1];
-      sum2 += this.loop[0][0] * this.loop[len - 1][1];
+      area += points[i][0] * points[i + 1][1] - points[i + 1][0] * points[i][1];
+      sum1 = sum1 + points[i][0] * points[i + 1][1];
+      sum2 = sum2 + points[i][1] * points[i + 1][0];
     }
+
+    sum1 = sum1 + points[len - 1][0] * points[0][1];
+
+    sum2 = sum2 + points[0][0] * points[len - 1][1];
+
     area = Math.abs(sum1 - sum2) / 2;
-    this.PolyArea = area;
+    this.PolyArea = area
     return area;
   }
 
   pick() {
-    return (this.PolyArea - 0.5 * this.loop.length + 1);
+    return (this.PolyArea - 0.5 * this.corners.length + 1);
   }
 }
 
@@ -142,19 +154,19 @@ let p2t3 = new PipeGame(p2test3);
 console.log(t1.findFarthest());
 console.log(t2.findFarthest());
 console.log(puzzle.findFarthest());
-
-console.log(p2t1.findFarthest());
+console.log("-----------------------")
+console.log("p2t1",p2t1.findFarthest());
 console.log(p2t1.shoelace());
 console.log(p2t1.pick());
+console.log("-----------------------")
+console.log("p2t2", p2t2.findFarthest());
+console.log(p2t2.shoelace());
+console.log(p2t2.pick());
+console.log("-----------------------")
+console.log("p2t3", p2t3.findFarthest());
+console.log(p2t3.shoelace());
+console.log(p2t3.pick());
 
-// console.log(p2t2.findFarthest());
-// console.log(p2t2.shoelace());
-// console.log(p2t2.pick());
-
-// console.log(p2t3.findFarthest());
-// console.log(p2t3.shoelace());
-// console.log(p2t3.pick());
-
-
-// console.log("pt2", puzzle.shoelace());
-// console.log("pt2 picks", puzzle.pick());
+console.log("-----------------------")
+console.log("pt2", puzzle.shoelace());
+console.log("pt2 picks", puzzle.pick());
